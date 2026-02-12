@@ -333,17 +333,36 @@ function yesClick() {
     });
 }
 
-/* SWEETALERT NO */
+/* SWEETALERT NO - LOOPING 8 KALI */
+let noClickCount = 0; // Counter untuk klik NO
+const noMessages = [
+    "gamauuu 😢",
+    "ihh gamauu haruss yess 😤",
+    "yess ajaa sayangg 💕",
+    "gamauuu lagi? Harus yess dong! 😘",
+    "ihh sayang, pilih yess aja ya 💖",
+    "gamauu terus? Yess dong cintahh 😍",
+    "haruss yess, gamauu lagi! 💘",
+    "GAMAUU WLEEE😝" // Pesan ke-8
+];
+
 document.getElementById("noBtn").addEventListener("click", () => {
-    Swal.fire({
-        title: 'Hehehe 😝',
-        text: 'Kayaknya tombol ini cuma buat bercanda deh~',
-        icon: 'info',
-        confirmButtonColor: '#ff4d6d'
-    });
+    if (noClickCount < 8) {
+        Swal.fire({
+            title: 'Hehehe 😝',
+            text: noMessages[noClickCount],
+            icon: 'info',
+            confirmButtonColor: '#ff4d6d'
+        });
+        noClickCount++;
+    } else {
+        // Setelah 8 kali, disable tombol NO atau biarkan saja tanpa alert lagi
+        // Tombol tetap bisa diklik, tapi tidak ada alert tambahan sampai klik YES
+        // Jika ingin disable tombol, tambah: noBtn.disabled = true;
+    }
 });
 
-/* NO BUTTON KABUR */
+/* NO BUTTON KABUR - TIDAK DIUBAH */
 document.getElementById("noBtn").addEventListener("mouseover", () => {
     const x = Math.random() * 200 - 100;
     const y = Math.random() * 200 - 100;
