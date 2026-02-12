@@ -7,6 +7,129 @@
     <!-- Hapus CDN SweetAlert -->
     <style>
         :root {
+            --paper-color: #ffffff;
+            --envelope-color: #ffb6c1; /* Pink pastel lucu */
+            --envelope-dark: #ff8fa3;
+            --pink-cat: #ffadd2;
+            --brown-cat: #b36d32;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffe4e1, #ffb6c1, #ff6f91, #ffadd2); /* Gradien pink lebih lucu dan berlapis */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+        }
+
+        /* ANIMASI JATUH (HEART, FLOWER, SPARKLE) */
+        .heart, .flower, .sparkle {
+            position: absolute;
+            animation: fall linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        .heart {
+            font-size: 24px;
+        }
+
+        .flower {
+            font-size: 22px; /* Lebih besar untuk lucu */
+            animation: fallFlower linear infinite; /* Animasi khusus bunga */
+        }
+
+        @keyframes fallFlower {
+            0% { transform: translateY(-10vh) rotate(0deg) scale(1); opacity: 1; }
+            50% { transform: translateY(50vh) rotate(180deg) scale(1.2); opacity: 0.8; }
+            100% { transform: translateY(110vh) rotate(360deg) scale(0.8); opacity: 0; }
+        }
+
+        .sparkle {
+            font-size: 18px;
+            color: #ffd700;
+        }
+
+        /* EFEK CONFETTI */
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, #ff4d6d, #ffb3ba);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: confettiFall 3s ease-out forwards;
+            z-index: 15;
+        }
+
+        .confetti:nth-child(odd) {
+            background: radial-gradient(circle, #ffd700, #ffff00);
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(300px) rotate(720deg); opacity: 0; }
+        }
+
+        /* WAITING SCREEN (Teks Tunggu Duluu) */
+        #waiting-screen {
+            position: absolute;
+            text-align: center;
+            z-index: 20;
+            cursor: pointer;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        #waiting-text {
+            color: #ffe8f4; /* Pink lucu */
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 2px rgba(255, 105, 180, 0.5);
+            animation: pulse 1.5s infinite;
+        }
+
+        #waiting-instruction {
+            color: #ffe8f4;
+            margin-top: 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(255, 105, 180, 0.5);
+            cursor: pointer; /* Pointer untuk indikasi klik */
+            user-select: none; /* Mencegah select teks */
+            transition: color 0.3s ease; /* Efek hover halus */
+        }
+
+        #waiting-instruction:hover {
+            color: #ff69b4; /* Warna lebih gelap saat hover untuk feedback */
+        }
+
+        /* Container Utama (Envelope) - Awalnya Hidden */
+        #loading-screen {
+            position: relative;
+            text-align: center;
+            cursor: pointer;
+            z-index: 10;
+            pointer-events: none; /* Disable klik selama belum musik */
+            opacity: 0; /* Hidden awalnya */
+            transition: opacity 0.5s ease;
+        }
+
+        /* Animasi Surat Melayang - DIMODIFIKASI: Lebih lama dan dinamis */
+        :root {
     --paper-color: #ffffff;
     --envelope-color: #ffb6c1; /* Pink pastel lucu */
     --envelope-dark: #ff8fa3;
@@ -248,6 +371,26 @@ body, html {
     } /* Landing smooth di tengah */
 }
 
+/* Animasi Keluar Surat - Wow Fly-Out */
+.fly-out {
+    animation: flyOut 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; /* Durasi 2 detik desktop */
+}
+
+@keyframes flyOut {
+    0% { 
+        transform: translate(0, 0) rotate(0deg) scale(1); 
+        opacity: 1; 
+    }
+    50% { 
+        transform: translate(200px, -200px) rotate(360deg) scale(1.2); 
+        opacity: 0.8; 
+    } /* Terbang ke kanan-atas dengan rotasi */
+    100% { 
+        transform: translate(500px, -400px) rotate(720deg) scale(0.5); 
+        opacity: 0; 
+    } /* Terbang keluar layar dengan fade */
+}
+
 @keyframes fadeIn { 
     from { opacity: 0; }
     to { opacity: 1; }
@@ -273,22 +416,28 @@ body, html {
 }
 
 /* RESPONSIVE */
-/* Desktop Besar (>1200px) - Default: Durasi 5 detik, efek penuh */
+/* Desktop Besar (>1200px) - Default: Durasi 5 detik flyIn, 2 detik flyOut */
 @media (min-width: 1201px) {
     .envelope-wrapper {
         animation: flyIn 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    .fly-out {
+        animation: flyOut 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     }
     #instruction {
         animation: fadeIn 1s ease 5.2s forwards, pulse 1.5s infinite 6s;
     }
 }
 
-/* Tablet (769px - 1200px): Durasi 4.5 detik, kurangi rotasi sedikit */
+/* Tablet (769px - 1200px): Durasi 4.5 detik flyIn, 1.8 detik flyOut */
 @media (max-width: 1200px) and (min-width: 769px) {
     .envelope-wrapper {
         width: 130px;
         height: 85px;
         animation: flyIn 4.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    .fly-out {
+        animation: flyOut 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     }
     .envelope-wrapper::before {
         border-left: 65px solid transparent;
@@ -332,13 +481,16 @@ body, html {
     }
 }
 
-/* Mobile (<768px): Durasi 4 detik, rotasi ringan, ukuran kecil, optimasi performa, elemen jatuh tetap penuh */
+/* Mobile (<768px): Durasi 4 detik flyIn, 1.5 detik flyOut, ukuran kecil, optimasi performa, elemen jatuh tetap penuh */
 @media (max-width: 768px) {
     .envelope-wrapper {
         width: 120px;
         height: 75px;
         animation: flyIn 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         will-change: transform; /* Optimasi untuk mobile */
+    }
+    .fly-out {
+        animation: flyOut 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     }
     .envelope-wrapper::before {
         border-left: 60px solid transparent;
@@ -440,10 +592,10 @@ body, html {
         setTimeout(() => {
             waitingScreen.style.display = 'none'; // Hilangkan sepenuhnya
             loadingScreen.style.opacity = '1'; // Tampilkan envelope
-            // Enable klik setelah animasi flyIn selesai (8 detik di desktop, 6 di mobile)
+            // Enable klik setelah animasi flyIn selesai (sesuaikan dengan durasi baru: 5s desktop, 4.5s tablet, 4s mobile)
             setTimeout(() => {
                 loadingScreen.style.pointerEvents = 'auto';
-            }, window.innerWidth <= 768 ? 6000 : 8000); // Sesuaikan dengan durasi animasi
+            }, window.innerWidth <= 768 ? 4000 : (window.innerWidth <= 1200 ? 4500 : 5000));
         }, 500); // Delay untuk transisi
     }
 
@@ -498,12 +650,18 @@ body, html {
             }, i * 100);
         }
 
+        // Tambah animasi fly-out setelah 1 detik (setelah buka)
+        setTimeout(() => {
+            envelope.classList.add('fly-out');
+        }, 1000);
+
+        // Fade-out screen setelah animasi fly-out selesai (total ~3 detik: 1s buka + 2s flyOut)
         setTimeout(() => {
             screen.classList.add('fade-out');
             setTimeout(() => {
                 window.location.href = 'conversation.html';
             }, 500);
-        }, 2000); // Lebih lama untuk efek
+        }, 3000); // Sesuaikan dengan durasi flyOut + delay
     }
 </script>
 </body>
