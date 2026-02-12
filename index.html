@@ -81,13 +81,43 @@
             100% { transform: translateY(300px) rotate(720deg); opacity: 0; }
         }
 
-        /* Container Utama */
+        /* WAITING SCREEN (Teks Tunggu Duluu) */
+        #waiting-screen {
+            position: absolute;
+            text-align: center;
+            z-index: 20;
+            cursor: pointer;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        #waiting-text {
+            color: #ffe8f4; /* Pink lucu */
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 2px rgba(255, 105, 180, 0.5);
+            animation: pulse 1.5s infinite;
+        }
+
+        #waiting-instruction {
+            color: #ffe8f4;
+            margin-top: 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(255, 105, 180, 0.5);
+        }
+
+        /* Container Utama (Envelope) - Awalnya Hidden */
         #loading-screen {
             position: relative;
             text-align: center;
             cursor: pointer;
             z-index: 10;
-            pointer-events: none; /* Disable klik selama animasi */
+            pointer-events: none; /* Disable klik selama belum musik */
+            opacity: 0; /* Hidden awalnya */
+            transition: opacity 0.5s ease;
         }
 
         /* Animasi Surat Melayang */
@@ -248,6 +278,14 @@
             .envelope-flower {
                 font-size: 18px;
             }
+
+            #waiting-text {
+                font-size: 1.3rem;
+            }
+
+            #waiting-instruction {
+                font-size: 0.9rem;
+            }
         }
 
         /* Mobile (<768px) */
@@ -295,6 +333,14 @@
             .heart:nth-child(n+6) { display: none; } /* Hanya 5 hati */
             .flower:nth-child(n+6) { display: none; } /* Hanya 5 bunga */
             .sparkle:nth-child(n+3) { display: none; } /* Hanya 2 sparkle */
+
+            #waiting-text {
+                font-size: 1.2rem;
+            }
+
+            #waiting-instruction {
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
@@ -329,62 +375,87 @@
     <div class="sparkle" style="left: 72vw; animation-duration: 7s;">💫</div>
     <div class="sparkle" style="left: 92vw; animation-duration: 5.5s;">✨</div>
 
+    <!-- WAITING SCREEN (Teks Tunggu Duluu) -->
+    <div id="waiting-screen">
+        <div id="waiting-text">Tunggu duluu 💕</div>
+        <div id="waiting-instruction">Klik di sini untuk muter musik 🎶</div>
+    </div>
+
+    <!-- LOADING SCREEN (Envelope - Hidden Awalnya) -->
     <div id="loading-screen" onclick="openEnvelope()">
         <div class="envelope-wrapper" id="envelope">
             <div class="envelope-flower">🌸</div> <!-- Bunga lucu di atas envelope -->
             <div class="paper-out">💌</div>
         </div>
-        <div id="instruction">Ketuk Suratnya untuk Membuka 💕</div>
+        <div id="instruction">Ketuk Suratnya cantikk!!💕</div>
     </div>
 
-    <!-- MUSIC (Mulai saat masuk halaman) -->
+    <!-- MUSIC -->
     <audio id="music" loop>
         <source src="musikcard.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        // Mulai musik saat halaman load (dengan penanganan untuk autoplay)
-        const music = document.getElementById("music");
-        function startMusic() {
-            music.play().catch(() => {
-                // Jika autoplay diblokir, mulai saat klik pertama
-                document.addEventListener('click', () => music.play(), { once: true });
-            });
-        }
-        startMusic();
+    const music = document.getElementById("music");
+    const waitingScreen = document.getElementById("waiting-screen");
+    const loadingScreen = document.getElementById("loading-screen");
 
-        // Enable klik setelah animasi flyIn selesai (3 detik)
+    // Fungsi untuk menampilkan envelope setelah musik berputar
+    function showEnvelope() {
+        waitingScreen.style.opacity = '0'; // Sembunyikan teks tunggu
         setTimeout(() => {
-            document.getElementById('loading-screen').style.pointerEvents = 'auto';
-        }, 3000);
-
-        function openEnvelope() {
-            const envelope = document.getElementById('envelope');
-            const instruction = document.getElementById('instruction');
-            const screen = document.getElementById('loading-screen');
-
-            envelope.classList.add('open-envelope');
-            instruction.style.display = 'none';
-
-            // Efek confetti saat buka
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => {
-                    const confetti = document.createElement("div");
-                    confetti.className = "confetti";
-                    confetti.style.left = Math.random() * 100 + "vw";
-                    confetti.style.top = "0px";
-                    document.body.appendChild(confetti);
-                    setTimeout(() => confetti.remove(), 3000);
-                }, i * 100);
-            }
-
+            waitingScreen.style.display = 'none'; // Hilangkan sepenuhnya
+            loadingScreen.style.opacity = '1'; // Tampilkan envelope
+            // Enable klik setelah animasi flyIn selesai (3 detik)
             setTimeout(() => {
-                screen.classList.add('fade-out');
-                setTimeout(() => {
-                    window.location.href = 'conversation.html';
-                }, 500);
-            }, 2000); // Lebih lama untuk efek
+                loadingScreen.style.pointerEvents = 'auto';
+            }, 3000);
+        }, 500); // Delay untuk transisi
+    }
+
+    // Coba mulai musik otomatis saat load
+    music.play().then(() => {
+        // Jika berhasil, langsung tampilkan envelope
+        showEnvelope();
+    }).catch(() => {
+        // Jika gagal, tunjukkan instruksi dan tunggu klik
+        waitingScreen.addEventListener('click', () => {
+            music.play().then(() => {
+                showEnvelope();
+            }).catch((error) => {
+                console.log("Musik gagal dimulai: ", error);
+                // Opsional: alert("Klik lagi untuk memulai musik!");
+            });
+        });
+    });
+
+    function openEnvelope() {
+        const envelope = document.getElementById('envelope');
+        const instruction = document.getElementById('instruction');
+        const screen = document.getElementById('loading-screen');
+
+        envelope.classList.add('open-envelope');
+        instruction.style.display = 'none';
+
+        // Efek confetti saat buka
+        for (let i = 0; i < 20; i++) {
+            setTimeout(() => {
+                const confetti = document.createElement("div");
+                confetti.className = "confetti";
+                confetti.style.left = Math.random() * 100 + "vw";
+                confetti.style.top = "0px";
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 3000);
+            }, i * 100);
         }
-    </script>
+
+        setTimeout(() => {
+            screen.classList.add('fade-out');
+            setTimeout(() => {
+                window.location.href = 'conversation.html';
+            }, 500);
+        }, 2000); // Lebih lama untuk efek
+    }
+</script>
 </body>
 </html>
