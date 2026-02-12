@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surat Cinta untuk Necca 💌</title>
+    <style>
+        :root {
+            --paper-color: #ffffff;
+            --envelope-color: #ffb6c1; /* Pink pastel lucu */
+            --envelope-dark: #ff8fa3;
+            --pink-cat: #ffadd2;
+            --brown-cat: #b36d32;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffe4e1, #ffb6c1, #ff6f91, #ffadd2); /* Gradien pink lebih lucu dan berlapis */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+        }
+
+        /* ANIMASI JATUH (HEART, FLOWER, SPARKLE) */
+        .heart, .flower, .sparkle {
+            position: absolute;
+            animation: fall linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        .heart {
+            font-size: 24px;
+        }
+
+        .flower {
+            font-size: 22px; /* Lebih besar untuk lucu */
+            animation: fallFlower linear infinite; /* Animasi khusus bunga */
+        }
+
+        @keyframes fallFlower {
+            0% { transform: translateY(-10vh) rotate(0deg) scale(1); opacity: 1; }
+            50% { transform: translateY(50vh) rotate(180deg) scale(1.2); opacity: 0.8; }
+            100% { transform: translateY(110vh) rotate(360deg) scale(0.8); opacity: 0; }
+        }
+
+        .sparkle {
+            font-size: 18px;
+            color: #ffd700;
+        }
+
+        /* EFEK CONFETTI */
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, #ff4d6d, #ffb3ba);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: confettiFall 3s ease-out forwards;
+            z-index: 15;
+        }
+
+        .confetti:nth-child(odd) {
+            background: radial-gradient(circle, #ffd700, #ffff00);
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(300px) rotate(720deg); opacity: 0; }
+        }
+
+        /* Container Utama */
+        #loading-screen {
+            position: relative;
+            text-align: center;
+            cursor: pointer;
+            z-index: 10;
+            pointer-events: none; /* Disable klik selama animasi */
+        }
+
+        /* Animasi Surat Melayang */
+        .envelope-wrapper {
+            position: relative;
+            width: 140px;
+            height: 90px;
+            background-color: var(--envelope-color);
+            margin: 0 auto;
+            animation: flyIn 3s ease-out forwards;
+            box-shadow: 0 15px 30px rgba(255, 182, 193, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+            border: 2px solid #ff69b4; /* Border pink lucu */
+        }
+
+        .envelope-wrapper:hover {
+            transform: scale(1.05);
+        }
+
+        .envelope-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            border-left: 70px solid transparent;
+            border-right: 70px solid transparent;
+            border-top: 50px solid var(--envelope-dark);
+            transform-origin: top;
+            transition: transform 0.5s ease;
+            z-index: 2;
+        }
+
+        /* BUNGA LUCU DI ENVELOPE */
+        .envelope-flower {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 20px;
+            animation: bloomEnvelope 2s ease-in-out infinite alternate;
+            z-index: 3;
+        }
+
+        @keyframes bloomEnvelope {
+            0% { transform: translateX(-50%) scale(1) rotate(0deg); }
+            100% { transform: translateX(-50%) scale(1.2) rotate(10deg); }
+        }
+
+        .paper-out {
+            position: absolute;
+            width: 110px;
+            height: 70px;
+            background: var(--paper-color);
+            bottom: 0;
+            transition: transform 0.8s ease;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            border-radius: 5px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        #instruction {
+            color: #ffe8f4; /* Pink lucu */
+            margin-top: 60px;
+            opacity: 0;
+            animation: fadeIn 1s ease 3.2s forwards, pulse 1.5s infinite 4s;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            text-shadow: 1px 1px 2px rgba(255, 105, 180, 0.5);
+        }
+
+        /* Keyframes */
+        @keyframes flyIn {
+            0% { transform: translate(-500px, 200px) rotate(-20deg); opacity: 0; }
+            60% { transform: translate(20px, -20px) rotate(10deg); opacity: 1; }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        @keyframes fadeIn { 
+            from { opacity: 0; } 
+            to { opacity: 1; } 
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Animasi Terbuka */
+        .open-envelope::before { 
+            transform: rotateX(180deg); 
+            z-index: 0; 
+        }
+        .open-envelope .paper-out { 
+            transform: translateY(-70px) scale(1.5); 
+        }
+        .fade-out { 
+            opacity: 0; 
+            transition: opacity 0.5s ease; 
+        }
+
+        /* RESPONSIVE */
+        /* Desktop Besar (>1200px) - Default */
+        /* Tablet (769px - 1200px) */
+        @media (max-width: 1200px) and (min-width: 769px) {
+            .envelope-wrapper {
+                width: 130px;
+                height: 85px;
+            }
+
+            .envelope-wrapper::before {
+                border-left: 65px solid transparent;
+                border-right: 65px solid transparent;
+                border-top: 45px solid var(--envelope-dark);
+            }
+
+            .paper-out {
+                width: 100px;
+                height: 65px;
+                font-size: 28px;
+            }
+
+            .open-envelope .paper-out {
+                transform: translateY(-65px) scale(1.4);
+            }
+
+            #instruction {
+                font-size: 0.8rem;
+                margin-top: 50px;
+            }
+
+            .heart {
+                font-size: 22px;
+            }
+
+            .flower {
+                font-size: 20px;
+            }
+
+            .sparkle {
+                font-size: 16px;
+            }
+
+            .confetti {
+                width: 7px;
+                height: 7px;
+            }
+
+            .envelope-flower {
+                font-size: 18px;
+            }
+        }
+
+        /* Mobile (<768px) */
+        @media (max-width: 768px) {
+            .envelope-wrapper {
+                width: 120px;
+                height: 75px;
+            }
+
+            .envelope-wrapper::before {
+                border-left: 60px solid transparent;
+                border-right: 60px solid transparent;
+                border-top: 40px solid var(--envelope-dark);
+            }
+
+            .paper-out {
+                width: 90px;
+                height: 55px;
+                font-size: 24px;
+            }
+
+            .open-envelope .paper-out {
+                transform: translateY(-55px) scale(1.3);
+            }
+
+            #instruction {
+                font-size: 0.7rem;
+                margin-top: 40px;
+            }
+
+            .heart, .flower, .sparkle {
+                font-size: 16px;
+            }
+
+            .confetti {
+                width: 5px;
+                height: 5px;
+            }
+
+            .envelope-flower {
+                font-size: 16px;
+            }
+
+            /* Kurangi animasi jatuh di mobile untuk performa */
+            .heart:nth-child(n+6) { display: none; } /* Hanya 5 hati */
+            .flower:nth-child(n+6) { display: none; } /* Hanya 5 bunga */
+            .sparkle:nth-child(n+3) { display: none; } /* Hanya 2 sparkle */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ANIMASI JATUH (LEBIH BANYAK BUNGA LUCU) -->
+    <div class="heart" style="left: 10vw; animation-duration: 4s;">💖</div>
+    <div class="heart" style="left: 20vw; animation-duration: 5s;">❤️</div>
+    <div class="heart" style="left: 30vw; animation-duration: 3s;">💕</div>
+    <div class="heart" style="left: 40vw; animation-duration: 6s;">💘</div>
+    <div class="heart" style="left: 50vw; animation-duration: 4.5s;">💗</div>
+    <div class="heart" style="left: 60vw; animation-duration: 5.5s;">💓</div>
+    <div class="heart" style="left: 70vw; animation-duration: 3.5s;">💞</div>
+    <div class="heart" style="left: 80vw; animation-duration: 6.5s;">💝</div>
+    <div class="heart" style="left: 90vw; animation-duration: 4s;">💟</div>
+
+    <!-- BUNGA LUCU JATUH (LEBIH BANYAK DAN BERAGAM) -->
+    <div class="flower" style="left: 5vw; animation-duration: 7s;">🌸</div>
+    <div class="flower" style="left: 15vw; animation-duration: 8s;">🌺</div>
+    <div class="flower" style="left: 25vw; animation-duration: 6s;">🌷</div>
+    <div class="flower" style="left: 35vw; animation-duration: 9s;">🌹</div>
+    <div class="flower" style="left: 45vw; animation-duration: 5s;">🌻</div>
+    <div class="flower" style="left: 55vw; animation-duration: 10s;">🌼</div>
+    <div class="flower" style="left: 65vw; animation-duration: 7.5s;">🌸</div>
+    <div class="flower" style="left: 75vw; animation-duration: 8.5s;">🌺</div>
+    <div class="flower" style="left: 85vw; animation-duration: 6.5s;">🌷</div>
+    <div class="flower" style="left: 95vw; animation-duration: 9.5s;">🌹</div>
+
+    <div class="sparkle" style="left: 12vw; animation-duration: 5s;">✨</div>
+    <div class="sparkle" style="left: 32vw; animation-duration: 6s;">⭐</div>
+    <div class="sparkle" style="left: 52vw; animation-duration: 4s;">🌟</div>
+    <div class="sparkle" style="left: 72vw; animation-duration: 7s;">💫</div>
+    <div class="sparkle" style="left: 92vw; animation-duration: 5.5s;">✨</div>
+
+    <div id="loading-screen" onclick="openEnvelope()">
+        <div class="envelope-wrapper" id="envelope">
+            <div class="envelope-flower">🌸</div> <!-- Bunga lucu di atas envelope -->
+            <div class="paper-out">💌</div>
+        </div>
+        <div id="instruction">Ketuk Suratnya untuk Membuka 💕</div>
+    </div>
+
+    <!-- MUSIC (Mulai saat masuk halaman) -->
+    <audio id="music" loop>
+        <source src="musikcard.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Mulai musik saat halaman load (dengan penanganan untuk autoplay)
+        const music = document.getElementById("music");
+        function startMusic() {
+            music.play().catch(() => {
+                // Jika autoplay diblokir, mulai saat klik pertama
+                document.addEventListener('click', () => music.play(), { once: true });
+            });
+        }
+        startMusic();
+
+        // Enable klik setelah animasi flyIn selesai (3 detik)
+        setTimeout(() => {
+            document.getElementById('loading-screen').style.pointerEvents = 'auto';
+        }, 3000);
+
+        function openEnvelope() {
+            const envelope = document.getElementById('envelope');
+            const instruction = document.getElementById('instruction');
+            const screen = document.getElementById('loading-screen');
+
+            envelope.classList.add('open-envelope');
+            instruction.style.display = 'none';
+
+            // Efek confetti saat buka
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement("div");
+                    confetti.className = "confetti";
+                    confetti.style.left = Math.random() * 100 + "vw";
+                    confetti.style.top = "0px";
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 100);
+            }
+
+            setTimeout(() => {
+                screen.classList.add('fade-out');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 500);
+            }, 2000); // Lebih lama untuk efek
+        }
+    </script>
+</body>
+</html>

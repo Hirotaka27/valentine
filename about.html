@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About You 💕</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ffe4e1, #ffb6c1, #ff6f91); /* Gradien romantis pink-merah */
+    background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.1),
+        rgba(255,255,255,0.1) 1px,
+        transparent 1px,
+        transparent 28px
+    );
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+}
+
+/* ANIMASI BUNGA JATUH (VALENTINE STYLE) */
+.flower {
+    position: absolute;
+    top: -50px;
+    width: 25px;
+    height: 25px;
+    background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjUiIGhlaWdodD0iMjUiIHZpZXdCb3g9IjAgMCAyNSAyNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyLjUgNC41QzE1IDQuNSAxNyA2LjUgMTcgOUMxNyAxMC41IDE2IDEyIDE0LjUgMTMuNUMxMyAxNSAxMiAxNiA5LjUgMTcuNUM3IDE2IDYgMTUgNSAxMy41QzQgMTIgMyAxMC41IDMgOUMzIDYuNSA1IDQuNSAxMi41IDQuNVoiIGZpbGw9IiNmZjZmOTEiLz4KPHBhdGggZD0iTTEyLjUgMTcuNUMxMi41IDIwIDEwIDIyIDggMjJDNiAyMiA0IDIwIDQgMTcuNUM0IDE1IDYgMTMgOCA5QzEwIDEzIDEyLjUgMTUgMTIuNSAxNy41WiIgZmlsbD0iI2ZmYjZjMSIvPgo8L3N2Zz4=') no-repeat center;
+    background-size: contain;
+    animation: fall linear infinite;
+    pointer-events: none;
+}
+
+.flower:nth-child(odd) {
+    animation-duration: 8s;
+    left: 5%;
+}
+
+.flower:nth-child(even) {
+    animation-duration: 12s;
+    left: 85%;
+}
+
+.flower:nth-child(3n) {
+    animation-duration: 10s;
+    left: 50%;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+/* HATI BERJATUHAN (TAMBAHAN VALENTINE) */
+.heart-fall {
+    position: absolute;
+    top: -50px;
+    font-size: 24px;
+    color: #ff6f91;
+    animation: heartFall linear infinite;
+    pointer-events: none;
+}
+
+.heart-fall:nth-child(3n) {
+    animation-duration: 6s;
+    left: 15%;
+}
+
+.heart-fall:nth-child(3n+1) {
+    animation-duration: 9s;
+    left: 65%;
+}
+
+.heart-fall:nth-child(3n+2) {
+    animation-duration: 7s;
+    left: 95%;
+}
+
+/* TAMBAHAN SPARKLE (GLITTER) */
+.sparkle {
+    position: absolute;
+    top: -50px;
+    font-size: 18px;
+    color: #ffd700;
+    animation: sparkleFall linear infinite;
+    pointer-events: none;
+}
+
+.sparkle:nth-child(4n) {
+    animation-duration: 5s;
+    left: 25%;
+}
+
+.sparkle:nth-child(4n+1) {
+    animation-duration: 8s;
+    left: 75%;
+}
+
+.sparkle:nth-child(4n+2) {
+    animation-duration: 6s;
+    left: 45%;
+}
+
+.sparkle:nth-child(4n+3) {
+    animation-duration: 10s;
+    left: 70%;
+}
+
+@keyframes heartFall {
+    0% { transform: translateY(-50px) scale(1); opacity: 1; }
+    100% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+}
+
+@keyframes sparkleFall {
+    0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { transform: translateY(100vh) rotate(180deg); opacity: 0; }
+}
+
+/* EFEK LOVE POPUP */
+.love-popup {
+    position: absolute;
+    font-size: 3rem;
+    color: #ff6f91;
+    pointer-events: none;
+    animation: loveRise 2s ease-out forwards;
+    z-index: 10;
+}
+
+@keyframes loveRise {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+}
+
+/* EFEK BINTANG MENYEBAR */
+.star-burst {
+    position: absolute;
+    font-size: 2rem;
+    color: #ffd700;
+    pointer-events: none;
+    animation: starBurst 3s ease-out forwards;
+    z-index: 10;
+}
+
+@keyframes starBurst {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    50% { transform: translateY(-100px) scale(1.2) rotate(180deg); opacity: 0.8; }
+    100% { transform: translateY(-200px) scale(0.5) rotate(360deg); opacity: 0; }
+}
+
+/* EFEK PETASAN (CONFETTI) */
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, #ff6f91, #ffb6c1);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: confettiFall 4s ease-out forwards;
+    z-index: 10;
+}
+
+.confetti:nth-child(odd) {
+    background: radial-gradient(circle, #ffd700, #ffff00);
+}
+
+.confetti:nth-child(3n) {
+    background: radial-gradient(circle, #ff1493, #ff69b4);
+}
+
+@keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(300px) rotate(720deg); opacity: 0; }
+}
+
+/* CONTAINER (CARD) DENGAN ANIMASI GOYANG */
+.scrapbook {
+    max-width: 1200px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95); /* Semi-transparan untuk efek romantis */
+    border-radius: 25px;
+    padding: 40px;
+    box-shadow: 0 25px 50px rgba(255, 111, 145, 0.3); /* Shadow pink lembut */
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(10px); /* Efek blur untuk kesan dreamy */
+    border: 2px solid rgba(255, 111, 145, 0.2);
+    animation: sway 6s ease-in-out infinite; /* Animasi goyang horizontal */
+}
+
+@keyframes sway {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* ===== DESKTOP LAYOUT ===== */
+.content {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    justify-content: center; /* Pusatkan konten */
+    animation: swayVertical 5s ease-in-out infinite; /* Animasi goyang vertikal pada content */
+}
+
+@keyframes swayVertical {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* PHOTO AREA */
+.photo-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+/* PHOTO ROW */
+.photos {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    justify-content: center;
+}
+
+/* PHOTO */
+.photo-wrapper {
+    position: relative;
+}
+
+.photo {
+    width: 240px;
+    background: white;
+    padding: 15px 15px 30px;
+    border-radius: 10px;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: transform 0.4s ease, box-shadow 0.4s ease, filter 0.4s ease;
+    border: 3px solid rgba(255, 111, 145, 0.1);
+}
+
+.photo:hover {
+    transform: scale(1.08) rotate(3deg);
+    box-shadow: 0 20px 40px rgba(255, 111, 145, 0.4);
+    filter: brightness(1.1);
+}
+
+.photo img {
+    width: 100%;
+    border-radius: 6px;
+}
+
+/* SCRAPBOOK ROTATION */
+.left {
+    transform: rotate(-8deg) translateY(20px);
+}
+.center {
+    transform: rotate(3deg) translateY(-15px);
+}
+.right {
+    transform: rotate(6deg) translateY(25px);
+}
+
+/* TAPE */
+.photo-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%) rotate(5deg);
+    width: 80px;
+    height: 25px;
+    background: rgba(255, 235, 150, 0.9);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+/* TAP HINT (HIDDEN DI DESKTOP) */
+.tap-hint {
+    display: none;
+}
+
+/* TEXT */
+.text {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 1.3rem;
+    line-height: 2;
+    color: #333;
+    max-width: 450px;
+    flex: 1;
+    text-align: left;
+    animation: textFadeIn 3s ease-in-out;
+}
+
+.title {
+    font-size: 2.8rem;
+    color: #ff6f91;
+    margin-bottom: 15px;
+    text-shadow: 3px 3px 6px rgba(255, 111, 145, 0.5);
+    animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+.text span {
+    color: #ff6f91;
+    font-weight: 600;
+}
+
+.decor {
+    font-size: 1.6rem;
+}
+
+/* ANIMASI TEKS FADE IN */
+@keyframes textFadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes titleGlow {
+    0% { text-shadow: 3px 3px 6px rgba(255, 111, 145, 0.5); }
+    100% { text-shadow: 3px 3px 12px rgba(255, 111, 145, 0.8); }
+}
+
+/* TAMBAHAN BUNGA DI TEKS */
+.text::before {
+    content: '🌸';
+    font-size: 2.5rem;
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bloom 3s ease-in-out infinite alternate;
+}
+
+@keyframes bloom {
+    0% { transform: translateX(-50%) scale(1); }
+    100% { transform: translateX(-50%) scale(1.3); }
+}
+
+/* ===== MOBILE ONLY ===== */
+@media (max-width: 768px) {
+    body {
+        padding: 10px; /* Kurangi padding untuk lebih banyak ruang */
+        align-items: flex-start; /* Ubah agar card bisa scroll dari atas */
+    }
+
+    .scrapbook {
+        max-width: 100%; /* Full width di mobile */
+        padding: 20px; /* Kurangi padding */
+        border-radius: 15px; /* Lebih kecil */
+        margin-top: 20px; /* Tambah margin atas agar tidak menempel */
+        animation: swayMobile 8s ease-in-out infinite; /* Animasi goyang lebih lambat di mobile */
+    }
+
+    @keyframes swayMobile {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-3px); }
+        75% { transform: translateX(3px); }
+    }
+
+    .content {
+        flex-direction: column; /* Stack vertikal */
+        gap: 20px; /* Kurangi gap */
+        align-items: center;
+        animation: swayVerticalMobile 7s ease-in-out infinite; /* Animasi goyang vertikal lebih lambat di mobile */
+    }
+
+    @keyframes swayVerticalMobile {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+
+    .photo-area {
+        width: 100%;
+    }
+
+    .photos {
+        justify-content: center;
+        gap: 10px; /* Kurangi gap antar foto */
+        flex-wrap: wrap; /* Jika perlu wrap */
+    }
+
+    .photo {
+        width: 100px; /* Lebih kecil */
+        padding: 8px 8px 15px; /* Kurangi padding */
+    }
+
+    .left, .center, .right {
+        transform: rotate(0deg); /* Reset rotasi untuk stabilitas */
+    }
+
+    .tap-hint {
+        display: block;
+        margin-top: 15px;
+        font-family: 'Patrick Hand', cursive;
+        font-size: 1.2rem;
+        color: #ff6f91;
+        animation: pulse 1.5s infinite;
+        text-align: center;
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .tap-hint.hide {
+        opacity: 0;
+        transform: translateY(10px);
+        pointer-events: none;
+    }
+
+    .text {
+        width: 100%;
+        max-width: 100%;
+        text-align: center;
+        margin-top: 20px;
+        font-size: 1.1rem; /* Lebih kecil untuk readability */
+        line-height: 1.8;
+    }
+
+    .title {
+        font-size: 2.2rem; /* Lebih kecil */
+    }
+
+    /* EFEK DI MOBILE: Kurangi jumlah untuk performa */
+    .love-popup {
+        font-size: 2rem;
+    }
+
+    .star-burst {
+        font-size: 1.5rem;
+    }
+
+    .confetti {
+        width: 6px;
+        height: 6px;
+    }
+
+    /* ANIMASI JATUH DI MOBILE: Tampilkan dengan ukuran lebih kecil dan jumlah lebih sedikit untuk performa */
+    .flower {
+        width: 15px;
+        height: 15px;
+    }
+
+    .heart-fall {
+        font-size: 16px;
+    }
+
+    .sparkle {
+        font-size: 12px;
+    }
+
+    .flower:nth-child(n+3) { display: none; } /* Hanya 2 bunga */
+    .heart-fall:nth-child(n+3) { display: none; } /* Hanya 2 hati */
+    .sparkle:nth-child(n+3) { display: none; } /* Hanya 2 sparkle */
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.7; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="flower"></div>
+<div class="flower"></div>
+<div class="flower"></div>
+<div class="flower"></div>
+<div class="heart-fall">❤️</div>
+<div class="heart-fall">💖</div>
+<div class="heart-fall">💕</div>
+<div class="heart-fall">💘</div>
+<div class="sparkle">✨</div>
+<div class="sparkle">⭐</div>
+<div class="sparkle">🌟</div>
+<div class="sparkle">💫</div>
+
+<!-- MUSIC -->
+<audio id="music" loop>
+    <source src="Mitski - My Love Mine All Mine (Official Lyric Video) (128).mp3" type="audio/mpeg">
+</audio>
+
+<div class="scrapbook">
+    <div class="content">
+
+        <!-- FOTO -->
+        <div class="photo-area">
+            <div class="photos">
+                <div class="photo-wrapper left">
+                    <div class="photo">
+                        <img src="necca1.jpg">
+                    </div>
+                </div>
+
+                <div class="photo-wrapper center">
+                    <div class="photo">
+                        <img src="necaaimuttt.jpg">
+                    </div>
+                </div>
+
+                <div class="photo-wrapper right">
+                    <div class="photo">
+                        <img src="gorgeus.jpg">
+                    </div>
+                </div>
+            </div>
+
+            <div class="tap-hint" id="tapHint">
+                ketuk gambarnya 💕
+            </div>
+        </div>
+
+        <!-- TEXT -->
+        <div class="text">
+            <div class="title">About You 💖</div>
+            <p class="decor">✨ 💕 ✨</p>
+            <p>She is <span>simple</span>, yet there's always a way to make her shine even brighter.</p>
+            <p>Her smile, like a little princess, makes me smile from head to heart.</p>
+            <p>It's more fun chatting together than staying silent, but mutual respect is part of the warmth in every story.</p>
+            <p>If she's precious in my life, then she is the golden part I never want to miss. 💌</p>
+            <p>Hi, she is my beautiful woman, she is so cute, adorable, and charming. She is also kind-hearted and gentle in her words. She is very attentive and understanding, to the point that I feel completely at ease with her.</p>
+           <p>SEE NEXT MEET 😍</p>
+            <button id="btnArchive" style="background: #ff6f91; color: white; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Patrick Hand', cursive; font-size: 1.2rem; cursor: pointer; margin: 10px 0; box-shadow: 0 4px 15px rgba(255,111,145,0.3); transition: 0.3s;">
+                Lihat satu arsip kita 📂
+            </button>
+            <p class="decor">🌷 ⭐ 🌷</p>
+        </div>
+
+    </div>
+</div>
+
+<div id="memoryOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(10px); animation: fadeIn 0.5s ease;">
+    <div style="background: white; padding: 15px; border-radius: 20px; text-align: center; max-width: 85%; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+        
+        <video id="archiveVideo" style="width: 100%; max-height: 60vh; border-radius: 15px; border: 4px solid #ffb6c1; object-fit: cover;" controls>
+            <source src="photoobooth.mp4" type="video/mp4">
+            Browser kamu tidak mendukung tag video.
+        </video>
+        
+        <p style="font-family: 'Patrick Hand', cursive; color: #333; margin-top: 15px; font-size: 1.4rem;">
+            Kapann Nihh Photoobooth Lagii... ❤️
+        </p>
+
+        <button id="closeBtn" style="margin-top: 10px; background: #ff6f91; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-family: 'Poppins', sans-serif;">Tutup ✨</button>
+    </div>
+</div>
+
+<style>
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+#btnArchive:hover {
+    transform: scale(1.1);
+    background: #ff477e;
+}
+</style>
+<script>
+const music = document.getElementById("music");
+const tapHint = document.getElementById("tapHint");
+const photos = document.querySelectorAll(".photo");
+const btnArchive = document.getElementById("btnArchive");
+const memoryOverlay = document.getElementById("memoryOverlay");
+const closeBtn = document.getElementById("closeBtn");
+const archiveVideo = document.getElementById("archiveVideo");
+
+photos.forEach(photo => {
+    photo.addEventListener("click", (e) => {
+        tapHint.classList.add("hide");
+        
+        music.currentTime = 0;
+        music.play();
+        
+        const rect = photo.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        
+        createLovePopup(x, y);
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => createStarBurst(x, y), i * 200);
+        }
+        for (let i = 0; i < 10; i++) {
+            setTimeout(() => createConfetti(x, y), i * 100);
+        }
+    }, { once: true });
+});
+
+btnArchive.addEventListener("click", () => {
+    memoryOverlay.style.display = "flex";
+    archiveVideo.play(); 
+    
+    for (let i = 0; i < 15; i++) {
+        setTimeout(() => createConfetti(window.innerWidth/2, window.innerHeight/2), i * 50);
+    }
+});
+
+closeBtn.addEventListener("click", () => {
+    memoryOverlay.style.display = "none";
+    archiveVideo.pause(); 
+    archiveVideo.currentTime = 0;
+});
+
+function createLovePopup(x, y) {
+    const love = document.createElement("div");
+    love.className = "love-popup";
+    love.textContent = "❤️";
+    love.style.left = `${x}px`;
+    love.style.top = `${y}px`;
+    document.body.appendChild(love);
+    setTimeout(() => love.remove(), 2000);
+}
+
+function createStarBurst(x, y) {
+    const star = document.createElement("div");
+    star.className = "star-burst";
+    star.textContent = "⭐";
+    star.style.left = `${x}px`;
+    star.style.top = `${y}px`;
+    document.body.appendChild(star);
+    setTimeout(() => star.remove(), 3000);
+}
+
+function createConfetti(x, y) {
+    const confetti = document.createElement("div");
+    confetti.className = "confetti";
+    confetti.style.left = `${x + (Math.random() - 0.5) * 100}px`;
+    confetti.style.top = `${y}px`;
+    document.body.appendChild(confetti);
+    setTimeout(() => confetti.remove(), 4000);
+}
+</script>
+
+
+</body>
+</html>
