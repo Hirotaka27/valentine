@@ -333,7 +333,7 @@ function yesClick() {
     });
 }
 
-/* SWEETALERT NO - LOOPING 8 KALI */
+/* SWEETALERT NO - LOOPING 8 KALI, KE-8 UBAH TEKS TOMBOL */
 let noClickCount = 0; // Counter untuk klik NO
 const noMessages = [
     "gamauuu 😢",
@@ -347,7 +347,7 @@ const noMessages = [
 ];
 
 document.getElementById("noBtn").addEventListener("click", () => {
-    if (noClickCount < 8) {
+    if (noClickCount < 7) { // Klik 1-7: Muncul alert dengan pesan
         Swal.fire({
             title: 'Hehehe 😝',
             text: noMessages[noClickCount],
@@ -355,10 +355,19 @@ document.getElementById("noBtn").addEventListener("click", () => {
             confirmButtonColor: '#ff4d6d'
         });
         noClickCount++;
+    } else if (noClickCount === 7) { // Klik ke-8: Muncul alert terakhir, lalu ubah teks tombol
+        Swal.fire({
+            title: 'Hehehe 😝',
+            text: noMessages[noClickCount],
+            icon: 'info',
+            confirmButtonColor: '#ff4d6d'
+        });
+        // Ubah teks tombol langsung setelah alert
+        document.getElementById("noBtn").innerHTML = "GAMAUU SAYANGG WLELELWE 😝";
+        noClickCount++; // Increment agar tidak masuk lagi
     } else {
-        // Setelah 8 kali, disable tombol NO atau biarkan saja tanpa alert lagi
-        // Tombol tetap bisa diklik, tapi tidak ada alert tambahan sampai klik YES
-        // Jika ingin disable tombol, tambah: noBtn.disabled = true;
+        // Setelah klik ke-8, tidak ada alert lagi, teks tombol sudah berubah
+        // Tombol tetap bisa diklik (geser-geser), tapi tanpa efek tambahan
     }
 });
 
