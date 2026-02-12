@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Surat Cinta untuk Necca 💌</title>
+    <!-- Tambahkan CDN SweetAlert untuk alert lucu -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root {
             --paper-color: #ffffff;
@@ -107,6 +109,13 @@
             font-size: 1rem;
             font-weight: bold;
             text-shadow: 1px 1px 2px rgba(255, 105, 180, 0.5);
+            cursor: pointer; /* Pointer untuk indikasi klik */
+            user-select: none; /* Mencegah select teks */
+            transition: color 0.3s ease; /* Efek hover halus */
+        }
+
+        #waiting-instruction:hover {
+            color: #ff69b4; /* Warna lebih gelap saat hover untuk feedback */
         }
 
         /* Container Utama (Envelope) - Awalnya Hidden */
@@ -120,14 +129,14 @@
             transition: opacity 0.5s ease;
         }
 
-        /* Animasi Surat Melayang */
+        /* Animasi Surat Melayang - DIMODIFIKASI: Lebih lama dan dinamis */
         .envelope-wrapper {
             position: relative;
             width: 140px;
             height: 90px;
             background-color: var(--envelope-color);
             margin: 0 auto;
-            animation: flyIn 3s ease-out forwards;
+            animation: flyIn 8s ease-out forwards; /* Durasi diperpanjang ke 8 detik */
             box-shadow: 0 15px 30px rgba(255, 182, 193, 0.4);
             display: flex;
             justify-content: center;
@@ -189,7 +198,7 @@
             color: #ffe8f4; /* Pink lucu */
             margin-top: 60px;
             opacity: 0;
-            animation: fadeIn 1s ease 3.2s forwards, pulse 1.5s infinite 4s;
+            animation: fadeIn 1s ease 8.2s forwards, pulse 1.5s infinite 9s; /* Sesuaikan delay dengan animasi baru */
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -197,11 +206,32 @@
             text-shadow: 1px 1px 2px rgba(255, 105, 180, 0.5);
         }
 
-        /* Keyframes */
+        /* Keyframes Baru: Muter-muter, terbang kiri-kanan, balik */
         @keyframes flyIn {
-            0% { transform: translate(-500px, 200px) rotate(-20deg); opacity: 0; }
-            60% { transform: translate(20px, -20px) rotate(10deg); opacity: 1; }
-            100% { transform: translate(0, 0) rotate(0deg); }
+            0% { 
+                transform: translate(-600px, 300px) rotate(-30deg) scale(0.8); 
+                opacity: 0; 
+            }
+            20% { 
+                transform: translate(200px, -100px) rotate(180deg) scale(1.1); 
+                opacity: 0.7; 
+            } /* Terbang ke kanan sambil muter */
+            40% { 
+                transform: translate(-200px, 50px) rotate(360deg) scale(1); 
+                opacity: 1; 
+            } /* Bolak-balik ke kiri */
+            60% { 
+                transform: translate(150px, -50px) rotate(540deg) scale(1.05); 
+                opacity: 0.9; 
+            } /* Terbang ke kanan lagi dengan muter lebih */
+            80% { 
+                transform: translate(-50px, 20px) rotate(720deg) scale(1); 
+                opacity: 1; 
+            } /* Balik ke kiri dengan goyang */
+            100% { 
+                transform: translate(0, 0) rotate(0deg) scale(1); 
+                opacity: 1; 
+            } /* Landing di tengah */
         }
 
         @keyframes fadeIn { 
@@ -293,6 +323,7 @@
             .envelope-wrapper {
                 width: 120px;
                 height: 75px;
+                animation: flyIn 6s ease-out forwards; /* Kurangi ke 6 detik di mobile agar tidak terlalu berat */
             }
 
             .envelope-wrapper::before {
@@ -378,7 +409,7 @@
     <!-- WAITING SCREEN (Teks Tunggu Duluu) -->
     <div id="waiting-screen">
         <div id="waiting-text">Tunggu duluu 💕</div>
-        <div id="waiting-instruction">Klik di sini untuk muter musik 🎶</div>
+        <span id="waiting-instruction" onclick="copyInstruction()">Klik di sini untuk muter musik 🎶</span>
     </div>
 
     <!-- LOADING SCREEN (Envelope - Hidden Awalnya) -->
@@ -394,8 +425,7 @@
     <audio id="music" loop>
         <source src="musikcard.mp3" type="audio/mpeg">
     </audio>
-
-    <script>
+ <script>
     const music = document.getElementById("music");
     const waitingScreen = document.getElementById("waiting-screen");
     const loadingScreen = document.getElementById("loading-screen");
@@ -406,11 +436,97 @@
         setTimeout(() => {
             waitingScreen.style.display = 'none'; // Hilangkan sepenuhnya
             loadingScreen.style.opacity = '1'; // Tampilkan envelope
-            // Enable klik setelah animasi flyIn selesai (3 detik)
+            // Enable klik setelah animasi flyIn selesai (8 detik di desktop, 6 di mobile)
             setTimeout(() => {
                 loadingScreen.style.pointerEvents = 'auto';
-            }, 3000);
+            }, window.innerWidth <= 768 ? 6000 : 8000); // Sesuaikan dengan durasi animasi
         }, 500); // Delay untuk transisi
+    }
+
+    // Fungsi untuk copy teks instruksi ke clipboard
+    function copyInstruction() {
+        const textToCopy = "Klik di sini untuk muter musik 🎶"; // Teks yang akan disalin
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            // Modern API
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                // Sukses: Tampilkan SweetAlert tema unicorn
+                Swal.fire({
+                    title: 'Teks Disalin! 🦄',
+                    text: 'Instruksi sudah di-copy ke clipboard. Bagikan ke temanmu ya! 💖',
+                    icon: 'success',
+                    background: 'linear-gradient(135deg, #ffb6c1, #ff6f91)',
+                    color: '#fff',
+                    confirmButtonColor: '#ff1493',
+                    confirmButtonText: 'OK 💕',
+                    showClass: {
+                        popup: 'animate__animated animate__bounceIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__bounceOut'
+                    }
+                });
+            }).catch((error) => {
+                console.log("Gagal copy dengan modern API: ", error);
+                fallbackCopyTextToClipboard(textToCopy);
+            });
+        } else {
+            // Fallback untuk browser lama
+            fallbackCopyTextToClipboard(textToCopy);
+        }
+    }
+
+    // Fallback copy untuk browser lama
+    function fallbackCopyTextToClipboard(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed"; // Avoid scrolling to bottom
+        textArea.style.left = "-999999px";
+        textArea.style.top = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                // Sukses: Tampilkan SweetAlert
+                Swal.fire({
+                    title: 'Teks Disalin! 🦄',
+                    text: 'Instruksi sudah di-copy. Sekarang paste di mana aja! 🎉',
+                    icon: 'success',
+                    background: 'linear-gradient(135deg, #ffb6c1, #ff6f91)',
+                    color: '#fff',
+                    confirmButtonColor: '#ff1493',
+                    confirmButtonText: 'OK 💕',
+                    showClass: {
+                        popup: 'animate__animated animate__bounceIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__bounceOut'
+                    }
+                });
+            } else {
+                throw new Error('Fallback copy failed');
+            }
+        } catch (error) {
+            console.log("Gagal copy dengan fallback: ", error);
+            // Jika gagal total, tampilkan alert error
+            Swal.fire({
+                title: 'Oops! Gagal Copy 🦄',
+                text: 'Browser kamu tidak mendukung copy otomatis. Copy manual aja ya! 📋',
+                icon: 'error',
+                background: 'linear-gradient(135deg, #ffb6c1, #ff6f91)',
+                color: '#fff',
+                confirmButtonColor: '#ff1493',
+                confirmButtonText: 'OK 💕',
+                showClass: {
+                    popup: 'animate__animated animate__bounceIn'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__bounceOut'
+                }
+            });
+        }
+        document.body.removeChild(textArea);
     }
 
     // Coba mulai musik otomatis saat load
